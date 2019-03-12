@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <h1>TinyApp</h1>
   <!-- Bootstrap CSS -->
 </head>
 <body style="font-size:20px; padding:50px;">
+  <% include ./partials/_header %>
   <div class="title">
-      <h1><% for (var key in urls) { %>
-        <h2> short url: <%= key %> long url: <%= urls[key] %></h2>
-      <% }; %></h1>
+    <a href="#">create new tiny url!</a>
+    <h1><% for (var key in urls) { %>
+    <h2> short url: <%= key %> long url: <%= urls[key] %></h2>
+    <% }; %></h1>
   </div>
-  <a href="#">new url</a>
 </body>
 </html>
