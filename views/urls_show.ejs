@@ -8,8 +8,11 @@
   <% include ./partials/_header %>
   <div class="title">
     <h2> shortURL: <%= shortURL %> </h2>
-    <h2> longURL: <%= longURL %> </h2>
+    <form method="POST" action="/urls/<%= shortURL %>/edit">
+      <label >Edit longURL:</label>
+      <input name= "newURL" type="text" placeholder="Enter longURL" style="width: 300px; margin: 1em; height: 2em;">
+      <button type="submit">update</button>
+    </form>
   </div>
-  <a href="#">new url</a>
 </body>
 </html>

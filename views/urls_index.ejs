@@ -6,11 +6,12 @@
 <body style="font-size:20px; padding:50px;">
   <% include ./partials/_header %>
   <div class="title">
-    <a href="#">create new tiny url!</a>
+    <a href="/urls/new">create new tiny url!</a>
     <h1><% for (var key in urls) { %>
     <h2> shortUrl: <%= key %> longUrl: <%= urls[key] %></h2>
       <form method="POST" action="/urls/<%= key %>/delete">
         <button type="submit">Delete</button>
+        <a href="/urls/<%= key %>">Edit!</a>
       </form>
     <% }; %></h1>
   </div>
