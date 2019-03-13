@@ -1,6 +1,6 @@
-var express = require("express");
-var app = express();
-var PORT = 8080; // default port 8080
+const express = require("express");
+const app = express();
+const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -15,7 +15,7 @@ let unique = "";
   return unique;
 }
 
-var urlDatabase = {
+const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
@@ -43,11 +43,17 @@ app.get("/urls/:id", (req, res) => {
 })
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);
-  res.send("OK");
+  const newShortURL = generateRandomString()
+  longURL = req.body.longURL
+  urlDatabase[newShortURL] = longURL
+  res.redirect("/urls/" + newShortURL);
 });
 
+app.get("/u/:id", (req, res) => {
+  let longURL = urlDatabase[req.params.id]
 
+  res.redirect(longURL);
+})
 
 
 
