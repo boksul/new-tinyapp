@@ -9,6 +9,9 @@
     <a href="#">create new tiny url!</a>
     <h1><% for (var key in urls) { %>
     <h2> shortUrl: <%= key %> longUrl: <%= urls[key] %></h2>
+      <form method="POST" action="/urls/<%= key %>/delete">
+        <button type="submit">Delete</button>
+      </form>
     <% }; %></h1>
   </div>
 </body>
