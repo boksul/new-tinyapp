@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<% if (username) { %>
+  <form method="POST" action="/urls/logout">
+  Welcome <strong><%= username %></strong>
+  <input type="submit" value="Logout">
+  </form>
+  <% } else { %>
+  <form method="POST" action="/urls/login">
+  <input type="text" name="username">
+  <input type="submit" value="Sign in" />
+  </form>
+<% } %>
+
 <head>
   <h1>TinyApp</h1>
 </head>
