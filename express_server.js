@@ -3,6 +3,7 @@ const app = express();
 const PORT = 8080;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser")
+const bcrypt = require('bcrypt');
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -128,7 +129,7 @@ app.post("/urls/register", (req, res) => {
     let register = {
       id: userId,
       email: userEmail,
-      password: userPassword
+      password: bcrypt.hashSync(req.body.password, 12)
     };
     urlDatabase[userId] = {}
     users[userId] = register
@@ -150,7 +151,6 @@ app.post("/urls", (req, res) => {
     urlDatabase[userId][newShortURL] = userURL;
     res.redirect("/urls")
   }
-  res.redirect("/urls");
 });
 
 app.post("/urls/:id/delete", (req, res) => {
@@ -167,9 +167,29 @@ app.post("/urls/:id/edit", (req, res) => {
 });
 
 app.post("/urls/login", (req, res) => {
-  res.cookie("username", req.body.username);
-  res.redirect("/urls");
-})
+  const userEmail = req.body.email;
+  const userPassword = req.body.password;
+  if (userEmail === "" || userPassword === "") {
+    res.status(400).end();
+    return;
+  }
+  let userExist = false;
+  for (let id in users) {
+    if (userEmail === users[id]["email"]) {
+      userExist = users[id];
+    }
+  }
+  if (userExist) {
+    if(bcrypt.compareSync(userPassword, userExist.password)) {
+      res.cookie("user_id", userExist.id);
+      res.redirect("/urls");
+    } else {
+      res.status(400).end();
+    }
+  } else {
+    res.status(400).end();
+  }
+});
 
 app.post("/urls/logout", (req, res) => {
   res.clearCookie("user_id");
