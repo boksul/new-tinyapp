@@ -50,9 +50,16 @@ app.get("/urls.json", (req, res) => {
 app.get("/urls", (req, res) => {
   let userID = req.cookies["user_id"];
   let userObject = users[userID];
+  let shortURLS = [];
+  for (let i in urlDatabase) {
+    for (let shortUrl in urlDatabase[i]) {
+      shortURLS.push(shortUrl)
+    }
+  }
   let templateVars = {
     urls: urlDatabase[userID],
-    user: userObject,
+    shortUrl: shortURLS,
+    user: userObject
   };
   res.render("urls_index", templateVars);
 });
