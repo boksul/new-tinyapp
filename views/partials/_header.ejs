@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<% if (username) { %>
+<% if (user) { %>
   <form method="POST" action="/urls/logout">
-  Welcome <strong><%= username %></strong>
+  Welcome <strong><%= user.email %></strong>
   <input type="submit" value="Logout">
   </form>
-  <% } else { %>
-  <form method="POST" action="/urls/login">
-  <input type="text" name="username">
-  <input type="submit" value="Sign in" />
-  </form>
+<% } else { %>
+  <a href="/urls/login">Login</a>
+  <a href="/urls/register">register</a>
 <% } %>
 
 <head>
