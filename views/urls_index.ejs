@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 </head>
 <body style="font-size:20px; padding:50px;">
+  <% include ./partials/_header %>
   <h2><strong>Welcome to TinyApp!</strong></h2>
       <% for (var address in urls) { %>
         <% if (user) { %>
-        <h1>LOGGED IN</h1>
+
         <ul>
           <li>
             <form method="POST" action="/urls/<%= address %>/delete">
-            <%= address + ' : ' %> <a href="/u/<%= address %>">
-            <%= urls[address] %> </a>
-            <a href="/urls/<%= address %>">Edit</a>
+             <%= address + ' : ' %> <a href="/u/<%= address %>">
+              <%= urls[address] %> </a> &nbsp
+            <a href="/urls/<%= address %>">Edit</a> &nbsp
             <input type="submit" value="delete">
             </form>
           </li>

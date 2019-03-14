@@ -20,25 +20,9 @@ let unique = "";
   return unique;
 }
 
-const urlDatabase = {
-  "userRandomID": {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-  }
-};
+const urlDatabase = {}
 
-const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur"
-  },
- "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk"
-  }
-}
+const users = {};
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
@@ -48,21 +32,27 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
+
 app.get("/urls", (req, res) => {
-  let userID = req.cookies["user_id"];
-  let userObject = users[userID];
+  let userId = req.cookies["user_id"];
+  let userObject = users[userId];
   let shortURLS = [];
+
   for (let i in urlDatabase) {
     for (let shortUrl in urlDatabase[i]) {
       shortURLS.push(shortUrl)
     }
   }
   let templateVars = {
-    urls: urlDatabase[userID],
+    urls: urlDatabase[userId],
     shortUrl: shortURLS,
     user: userObject
   };
-  res.render("urls_index", templateVars);
+  if (userId) {
+    res.render("urls_index", templateVars);
+  } else {
+    res.render("urls_login")
+  }
 });
 
 app.get("/urls/login", (req, res) => {
@@ -84,15 +74,19 @@ app.get("/urls/register", (req, res) => {
 })
 
 app.get("/urls/:id", (req, res) => {
-  const username = req.cookies["username"];
+  const userId = req.cookies["user_id"];
   let templateVars = {
     shortURL: req.params.id,
     user: req.cookies["user_id"]
   };
-  res.render("urls_show", templateVars)
+  if (userId) {
+    res.render("urls_show", templateVars)
+  } else {
+    res.render("urls_login")
+  }
 })
 
-app.get("/u/:id", (req, res) => {
+app.get("/u/:shortURL", (req, res) => {
   const shortRandomURL = req.params.shortURL;
   const userId = req.cookies["user_id"];
   let keyFound = ""
@@ -106,6 +100,7 @@ app.get("/u/:id", (req, res) => {
     }
   }
 })
+
 
 app.post("/urls/register", (req, res) => {
   const userEmail = req.body.email
@@ -137,11 +132,6 @@ app.post("/urls/register", (req, res) => {
     res.redirect("/urls")
   }
 });
-
-
-
-
-
 
 app.post("/urls", (req, res) => {
   const newShortURL = generateRandomString()
