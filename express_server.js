@@ -55,7 +55,7 @@ app.get("/urls", (req, res) => {
   }
 });
 
-app.get("/urls/login", (req, res) => {
+app.get("/login", (req, res) => {
   res.render("urls_login")
 });
 
@@ -68,8 +68,7 @@ app.get("/urls/new", (req, res) => {
   }
 });
 
-app.get("/urls/register", (req, res) => {
-
+app.get("/register", (req, res) => {
   res.render("urls_register")
 })
 
@@ -156,7 +155,7 @@ app.post("/urls/:id/edit", (req, res) => {
   res.redirect("/urls");
 });
 
-app.post("/urls/login", (req, res) => {
+app.post("/login", (req, res) => {
   const userEmail = req.body.email;
   const userPassword = req.body.password;
   if (userEmail === "" || userPassword === "") {
@@ -181,7 +180,7 @@ app.post("/urls/login", (req, res) => {
   }
 });
 
-app.post("/urls/logout", (req, res) => {
+app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
   res.redirect("/urls");
 })

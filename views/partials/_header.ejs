@@ -1,17 +1,10 @@
-<!DOCTYPE html>
 
-<head>
-  <h1>TinyApp</h1>
-</head>
-
-<body>
 <% if (user) { %>
-  <form method="POST" action="/urls/logout">
+  <form method="POST" action="/logout">
   Welcome <strong><%= user.email %></strong>
   <input type="submit" value="Logout">
   </form>
 <% } else { %>
-  <a href="/urls/login">Login</a>
-  <a href="/urls/register">register</a>
+  <a href="/login">Login</a>
+  <a href="/register">register</a>
 <% } %>
-</body>
