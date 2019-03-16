@@ -101,7 +101,7 @@ app.get("/u/:shortURL", (req, res) => {
 })
 
 
-app.post("/urls/register", (req, res) => {
+app.post("/register", (req, res) => {
   const userEmail = req.body.email
   const userPassword = req.body.password
 
