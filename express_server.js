@@ -11,6 +11,7 @@ app.use(cookieParser());
 
 app.set("view engine", "ejs");
 
+// function to create random shortURL
 function generateRandomString() {
 let unique = "";
   let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -20,6 +21,7 @@ let unique = "";
   return unique;
 }
 
+//Database
 const urlDatabase = {}
 
 const users = {};
@@ -32,7 +34,7 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
-
+//Index Page
 app.get("/urls", (req, res) => {
   let userId = req.cookies["user_id"];
   let userObject = users[userId];
@@ -59,6 +61,8 @@ app.get("/login", (req, res) => {
   res.render("urls_login")
 });
 
+
+//Redirecting if not logged in
 app.get("/urls/new", (req, res) => {
   let templateVars = { user: req.cookies["user_id"] };
   if (req.cookies["user_id"]) {
@@ -68,10 +72,12 @@ app.get("/urls/new", (req, res) => {
   }
 });
 
+//Register Page displayed when clicked
 app.get("/register", (req, res) => {
   res.render("urls_register")
 })
 
+//Edit page
 app.get("/urls/:id", (req, res) => {
   const userId = req.cookies["user_id"];
   let templateVars = {
@@ -85,22 +91,25 @@ app.get("/urls/:id", (req, res) => {
   }
 })
 
+//shorURL gets redirected to webpage
 app.get("/u/:shortURL", (req, res) => {
   const shortRandomURL = req.params.shortURL;
-  const userId = req.cookies["user_id"];
-  let keyFound = ""
-  for (owner in urlDatabase) {
-    if(userId === owner) {
-      for (data in urlDatabase[owner]) {
-        if (data === shortRandomURL) {
-          res.redirect(urlDatabase[owner][data])
-        }
+  let longURL;
+  for (ids in urlDatabase) {
+    for (shortURL in urlDatabase[ids]) {
+      if (shortURL === shortRandomURL) {
+        longURL = urlDatabase[ids][shortURL];
+      }
+      if (longURL) {
+        res.redirect(longURL)
+      } else {
+        res.status(400).send("Not existing URL!")
       }
     }
   }
 })
 
-
+//Saves Registered Data to Userdatabase & creates new cookie
 app.post("/register", (req, res) => {
   const userEmail = req.body.email
   const userPassword = req.body.password
@@ -132,6 +141,8 @@ app.post("/register", (req, res) => {
   }
 });
 
+
+//Generates random shortURL
 app.post("/urls", (req, res) => {
   const newShortURL = generateRandomString()
   const userId = req.cookies["user_id"]
@@ -142,6 +153,7 @@ app.post("/urls", (req, res) => {
   }
 });
 
+//Delete added websites
 app.post("/urls/:id/delete", (req, res) => {
   const userId = req.cookies["user_id"]
   const id = req.params.id
@@ -155,6 +167,8 @@ app.post("/urls/:id/edit", (req, res) => {
   res.redirect("/urls");
 });
 
+
+//Check Login
 app.post("/login", (req, res) => {
   const userEmail = req.body.email;
   const userPassword = req.body.password;
@@ -180,6 +194,8 @@ app.post("/login", (req, res) => {
   }
 });
 
+
+//Logout & Clear cookies
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
   res.redirect("/urls");
